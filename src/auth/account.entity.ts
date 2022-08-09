@@ -1,8 +1,10 @@
+import { Player } from 'src/players/player.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   Index,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -29,4 +31,7 @@ export class Account {
 
   @UpdateDateColumn()
   public updated_at: Date;
+
+  @OneToMany((_type) => Player, (player) => player.account, { eager: true })
+  players: Player[];
 }

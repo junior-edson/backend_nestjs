@@ -1,8 +1,11 @@
+import { Exclude } from 'class-transformer';
+import { Account } from 'src/auth/account.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   Index,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -12,30 +15,6 @@ import { PlayerStatus } from './player-status.enum';
 export class Player {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-
-  @Column({
-    nullable: true,
-  })
-  @Index()
-  accountId: string;
-
-  @Column({
-    nullable: true,
-  })
-  @Index()
-  skillsId: string;
-
-  @Column({
-    nullable: true,
-  })
-  @Index()
-  classId: string;
-
-  @Column({
-    nullable: true,
-  })
-  @Index()
-  squadId: string;
 
   @Column({
     unique: true,
@@ -68,4 +47,8 @@ export class Player {
 
   @UpdateDateColumn()
   public updated_at: Date;
+
+  @ManyToOne((_type) => Account, (account) => account.players, { eager: false })
+  @Exclude({ toPlainOnly: true })
+  account: Account;
 }

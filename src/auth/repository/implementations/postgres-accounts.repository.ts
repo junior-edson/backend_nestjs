@@ -5,16 +5,16 @@ import { IAccountsRepository } from '../account.repository';
 import * as bcrypt from 'bcrypt';
 
 export class AccountsRepository implements IAccountsRepository {
-  dataSource = PostgresDataSource;
+  dataSource = PostgresDataSource.manager.getRepository(Account);
 
   async getAccountById(id: string): Promise<Account | null> {
-    return this.dataSource.manager.findOneBy(Account, {
+    return this.dataSource.findOneBy({
       id: id,
     });
   }
 
   async getAccountByEmail(email: string): Promise<Account | null> {
-    return this.dataSource.manager.findOneBy(Account, {
+    return this.dataSource.findOneBy({
       email: email,
     });
   }
@@ -26,12 +26,12 @@ export class AccountsRepository implements IAccountsRepository {
     const salt: string = await bcrypt.genSalt();
     const hashedPassword: string = await bcrypt.hash(password, salt);
 
-    const account: Account = this.dataSource.manager.create(Account, {
+    const account: Account = this.dataSource.create({
       name,
       email,
       password: hashedPassword,
     });
 
-    return this.dataSource.manager.save(account);
+    return this.dataSource.save(account);
   }
 }

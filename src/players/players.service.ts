@@ -4,6 +4,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { Account } from 'src/auth/account.entity';
 import { CreatePlayerDto } from './dto/create-player.dto';
 import { GetPlayerFilterDto } from './dto/get-player-filter.dto';
 import { PlayerStatus } from './player-status.enum';
@@ -17,8 +18,11 @@ export class PlayersService {
     private readonly playersRepository: IPlayersRepository,
   ) {}
 
-  async getPlayerById(id: string): Promise<Player | null> {
-    const player: Player = await this.playersRepository.getPlayerById(id);
+  async getPlayerById(id: string, account: Account): Promise<Player> {
+    const player: Player = await this.playersRepository.getPlayerById(
+      id,
+      account,
+    );
 
     if (!player) {
       throw new NotFoundException(`Player ID "${id}" not found`);
@@ -27,30 +31,40 @@ export class PlayersService {
     return player;
   }
 
-  async getCountPlayerByName(name: string): Promise<any> {
+  async getCountPlayerByName(name: string): Promise<number> {
     return this.playersRepository.getCountPlayerByName(name);
   }
 
-  async createPlayer(createPlayerDto: CreatePlayerDto): Promise<Player> {
+  async createPlayer(
+    createPlayerDto: CreatePlayerDto,
+    account: Account,
+  ): Promise<Player> {
     const { name } = createPlayerDto;
-    const foundPlayer: Player = await this.getCountPlayerByName(name);
+    const foundPlayer: number = await this.getCountPlayerByName(name);
 
     if (!foundPlayer) {
-      return this.playersRepository.createPlayer(createPlayerDto);
+      return this.playersRepository.createPlayer(createPlayerDto, account);
     } else {
       throw new ConflictException(`Player name "${name}" already exists`);
     }
   }
 
-  async getPlayers(filterDto: GetPlayerFilterDto): Promise<Player[]> {
-    return this.playersRepository.getPlayers(filterDto);
+  async getPlayers(
+    filterDto: GetPlayerFilterDto,
+    account: Account,
+  ): Promise<Player[]> {
+    return this.playersRepository.getPlayers(filterDto, account);
   }
 
-  async deletePlayer(id: string): Promise<void> {
-    return this.playersRepository.deletePlayer(id);
+  async deletePlayer(id: string, account: Account): Promise<void> {
+    return this.playersRepository.deletePlayer(id, account);
   }
 
-  async updatePlayerStatus(id: string, status: PlayerStatus): Promise<Player> {
-    return this.playersRepository.updatePlayerStatus(id, status);
+  async updatePlayerStatus(
+    id: string,
+    status: PlayerStatus,
+    account: Account,
+  ): Promise<Player> {
+    return this.playersRepository.updatePlayerStatus(id, status, account);
   }
 }
