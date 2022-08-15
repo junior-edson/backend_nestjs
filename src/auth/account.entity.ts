@@ -26,11 +26,16 @@ export class Account {
   @Column()
   password: string;
 
+  @Column({
+    nullable: true,
+  })
+  suspensionTime: Date;
+
   @CreateDateColumn()
-  public created_at: Date;
+  createdAt: Date;
 
   @UpdateDateColumn()
-  public updated_at: Date;
+  updatedAt: Date;
 
   @OneToMany((_type) => Player, (player) => player.account, { eager: true })
   players: Player[];

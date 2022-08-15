@@ -37,6 +37,7 @@ export class PlayersRepository implements IPlayersRepository {
       amountMoney: 1000,
       avatar: '/path/to/img/profile.png',
       inventorySize: 15,
+      current_exp: 0,
       suspensionTime: null,
       status: PlayerStatus.ACTIVE,
     });
