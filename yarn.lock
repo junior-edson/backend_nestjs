@@ -652,7 +652,7 @@
 
 "@nestjs/cli@^9.0.0":
   version "9.0.0"
-  resolved "https://registry.npmjs.org/@nestjs/cli/-/cli-9.0.0.tgz"
+  resolved "https://registry.yarnpkg.com/@nestjs/cli/-/cli-9.0.0.tgz#f9ab4c33cfbc9ee54d792fe29e0f582e0bf04b06"
   integrity sha512-xT5uOoIEcaB/Fn6UeF7atfKqKiEEsTeRKPiM55p+e5H9WVw8FC2r4ceZgaINJbsw0QWskVj/ZQadMo6dA6hXxw==
   dependencies:
     "@angular-devkit/core" "14.0.5"
